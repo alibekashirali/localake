@@ -1,0 +1,74 @@
+[project]
+name = "localake"
+version = "0.1.0"
+description = "Local-first data workspace for Parquet, DuckDB and lakehouse data"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+keywords = ["duckdb", "parquet", "lakehouse", "sql", "local-first", "data"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Topic :: Database :: Front-Ends",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "duckdb>=1.1",
+    "pydantic>=2.9",
+    "orjson>=3.10",
+    "tomlkit>=0.13",
+    "watchfiles>=0.24",
+    "sqlglot>=25.24",
+    "python-multipart>=0.0.12",
+]
+
+[project.urls]
+Homepage = "https://github.com/ashiralialibek/localake"
+Repository = "https://github.com/ashiralialibek/localake"
+Issues = "https://github.com/ashiralialibek/localake/issues"
+
+[project.scripts]
+localake = "localake.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "httpx>=0.27",
+    "pytest-asyncio>=0.24",
+    "pyarrow>=17",
+    # Needed by tests/test_packaging.py, which loads the wheel build hook.
+    "hatchling>=1.25",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["backend/localake"]
+
+# Folds frontend/dist into the wheel as localake/web/.
+[tool.hatch.build.targets.wheel.hooks.custom]
+path = "scripts/hatch_build.py"
+
+[tool.hatch.build.targets.sdist]
+include = ["backend", "frontend/src", "frontend/*.json", "frontend/*.ts",
+           "frontend/index.html", "scripts", "tests", "README.md", "pyproject.toml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["backend"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+# Pyflakes (undefined names, unused imports) plus the core pycodestyle errors.
+select = ["E4", "E7", "E9", "F"]

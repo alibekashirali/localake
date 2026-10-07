@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+/* Design tokens lifted from the reference interface: a cool blue-grey ground,
+   white cards, and a single saturated indigo-blue for anything actionable. */
+@theme {
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #dfe6ff;
+  --color-brand-200: #c3d0fe;
+  --color-brand-400: #6d8bf5;
+  --color-brand-500: #4a6df0;
+  --color-brand-600: #3355e8;
+  --color-brand-700: #2843c9;
+
+  --color-ink-900: #0f172a;
+  --color-ink-700: #334155;
+  --color-ink-600: #475569;
+  --color-ink-500: #64748b;
+  --color-ink-400: #94a3b8;
+
+  --color-surface: #ffffff;
+  --color-canvas: #f4f6fb;
+  --color-line: #e5e9f2;
+  --color-line-strong: #d6dce9;
+
+  --color-ok: #16a34a;
+  --color-warn: #d97706;
+  --color-danger: #dc2626;
+
+  --radius-card: 0.875rem;
+
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.04), 0 1px 3px rgb(15 23 42 / 0.06);
+  --shadow-pop: 0 10px 30px rgb(15 23 42 / 0.12), 0 2px 8px rgb(15 23 42 / 0.08);
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  /* Kept local: Local Mode means the app never reaches out for a webfont. */
+  --font-mono: "SF Mono", ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 1px;
+  }
+}
+
+@layer components {
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Panel dividers double as drag handles; they only tint on hover. */
+  .resize-handle {
+    position: relative;
+    flex: none;
+    background: transparent;
+    transition: background-color 120ms ease;
+  }
+  .resize-handle[data-panel-group-direction="horizontal"] {
+    width: 8px;
+    cursor: col-resize;
+  }
+  .resize-handle[data-panel-group-direction="vertical"] {
+    height: 8px;
+    cursor: row-resize;
+  }
+  .resize-handle[data-resize-handle-state="hover"],
+  .resize-handle[data-resize-handle-state="drag"] {
+    background: var(--color-brand-200);
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+}
